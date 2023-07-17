@@ -1,0 +1,20 @@
+<!-- Minimal persistence.xml, normally there'd be more config in here including persistence provider -->
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence" version="3.1">
+    <persistence-unit name="basic-jdbc-persistence-unit">
+
+        <!-- Sometime classes are defined here, but instead your persistence provider can scan the root -->
+        <!-- of your persistence unit and adds all annotated managed persistence classes to the persistence unit. -->
+
+        <!-- <class>com.ephraimglick.basicjdbcapp.Artist</class>-->
+
+        <!-- Instead of configuring the entity manager in code, it can be done as below -->
+
+        <!--        <properties>-->
+        <!--            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost/"/>-->
+        <!--            <property name="javax.persistence.jdbc.user" value="postgres"/>-->
+        <!--            <property name="javax.persistence.jdbc.password" value="password"/>-->
+        <!--            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>-->
+        <!--        </properties>-->
+
+    </persistence-unit>
+</persistence>
