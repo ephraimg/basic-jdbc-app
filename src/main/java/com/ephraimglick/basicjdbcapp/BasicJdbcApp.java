@@ -51,7 +51,7 @@ public class BasicJdbcApp {
         System.out.println("Database set up successfully...");
     }
 
-    private static void saveDataFromUser(EntityManager entityManager) throws IOException, SQLException {
+    private static void saveDataFromUser(EntityManager entityManager) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         System.out.println("Enter an artist");
