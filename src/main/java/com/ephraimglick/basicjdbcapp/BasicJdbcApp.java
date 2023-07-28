@@ -8,21 +8,17 @@ import java.io.InputStreamReader;
 import java.sql.*;
 
 public class BasicJdbcApp {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, SQLException {
         String DB_URL = "jdbc:postgresql://localhost/";
         String USER = "postgres";
         String PASS = "password";
 
-        try {
-            Jdbi jdbi = Jdbi.create(DB_URL, USER, PASS);
-            initDb(jdbi);
-            saveDataFromUser(jdbi);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Jdbi jdbi = Jdbi.create(DB_URL, USER, PASS);
+        initDb(jdbi);
+        saveDataFromUser(jdbi);
     }
 
-    private static void initDb(Jdbi jdbi) throws SQLException {
+    private static void initDb(Jdbi jdbi) {
         String sql = "" +
                 "CREATE SCHEMA IF NOT EXISTS music;" +
                 "CREATE TABLE IF NOT EXISTS music.artists (artist_name VARCHAR(25) PRIMARY KEY, rating smallint);";
