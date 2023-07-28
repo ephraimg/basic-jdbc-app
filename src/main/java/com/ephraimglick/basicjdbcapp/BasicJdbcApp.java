@@ -6,29 +6,26 @@ import java.io.InputStreamReader;
 import java.sql.*;
 
 public class BasicJdbcApp {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, SQLException {
         String DB_URL = "jdbc:postgresql://localhost/";
         String USER = "postgres";
         String PASS = "password";
 
-        try {
-            // Driver is registered via automatic service discovery (possible in JDBC 4+).
-            // This relies on the driver being on the classpath.
-            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            initDb(conn);
-            saveDataFromUser(conn);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Connection conn = initDb(DB_URL, USER, PASS);
+        saveDataFromUser(conn);
     }
 
-    private static void initDb(Connection conn) throws SQLException {
+    private static Connection initDb(String DB_URL, String USER, String PASS) throws SQLException {
+        // Driver is registered via automatic service discovery (possible in JDBC 4+).
+        // This relies on the driver being on the classpath.
+        Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
         Statement stmt = conn.createStatement();
         String sql = "" +
                 "CREATE SCHEMA IF NOT EXISTS music;" +
                 "CREATE TABLE IF NOT EXISTS music.artists (artist_name VARCHAR(25) PRIMARY KEY, rating smallint);";
         stmt.executeUpdate(sql);
         System.out.println("Database set up successfully...");
+        return conn;
     }
 
     private static void saveDataFromUser(Connection conn) throws IOException, SQLException {
