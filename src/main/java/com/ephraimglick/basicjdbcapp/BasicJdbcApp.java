@@ -15,9 +15,9 @@ public class BasicJdbcApp {
         saveDataFromUser(conn);
     }
 
-    private static Connection initDb(String DB_URL, String USER, String PASS) throws SQLException, ClassNotFoundException {
+    private static Connection initDb(String dbUrl, String user, String pass) throws SQLException, ClassNotFoundException {
         Class.forName("org.postgresql.Driver");
-        Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        Connection conn = DriverManager.getConnection(dbUrl, user, pass);
         Statement stmt = conn.createStatement();
         String sql = "" +
                 "CREATE SCHEMA IF NOT EXISTS music;" +
