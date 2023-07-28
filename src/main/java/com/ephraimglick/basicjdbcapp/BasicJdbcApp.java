@@ -6,28 +6,25 @@ import java.io.InputStreamReader;
 import java.sql.*;
 
 public class BasicJdbcApp {
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
-        Class.forName("org.postgresql.Driver");
+    public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException {
         String DB_URL = "jdbc:postgresql://localhost/";
         String USER = "postgres";
         String PASS = "password";
 
-        try {
-            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            initDb(conn);
-            saveDataFromUser(conn);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Connection conn = initDb(DB_URL, USER, PASS);
+        saveDataFromUser(conn);
     }
 
-    private static void initDb(Connection conn) throws SQLException {
+    private static Connection initDb(String DB_URL, String USER, String PASS) throws SQLException, ClassNotFoundException {
+        Class.forName("org.postgresql.Driver");
+        Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
         Statement stmt = conn.createStatement();
         String sql = "" +
                 "CREATE SCHEMA IF NOT EXISTS music;" +
                 "CREATE TABLE IF NOT EXISTS music.artists (artist_name VARCHAR(25) PRIMARY KEY, rating smallint);";
         stmt.executeUpdate(sql);
         System.out.println("Database set up successfully...");
+        return conn;
     }
 
     private static void saveDataFromUser(Connection conn) throws IOException, SQLException {
