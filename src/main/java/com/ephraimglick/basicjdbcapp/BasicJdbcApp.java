@@ -14,38 +14,35 @@ import java.util.Map;
 import org.postgresql.ds.PGSimpleDataSource;
 
 public class BasicJdbcApp {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, SQLException {
         String DB_URL = "jdbc:postgresql://localhost/";
         String USER = "postgres";
         String PASS = "password";
 
-        try {
-            // Using this datasource just for initDb (normally db would be created via migration)
-            PGSimpleDataSource dataSource = new PGSimpleDataSource();
-            dataSource.setUrl(DB_URL);
-            Connection conn = dataSource.getConnection(USER, PASS);
-            initDb(conn);
+        initDb(DB_URL, USER, PASS);
 
-            // Configuration can be done like this if not configuring in persistence.xml
-             Map<String, Object> props = new HashMap<>();
-             props.put("jakarta.persistence.jdbc.driver", "org.postgresql.Driver");
-             props.put("jakarta.persistence.jdbc.url", DB_URL);
-             props.put("jakarta.persistence.jdbc.user", USER);
-             props.put("jakarta.persistence.jdbc.password", PASS);
-             EntityManagerFactory emf = Persistence.createEntityManagerFactory("basic-jdbc-persistence-unit", props);
+        // Configuration can be done like this if not configuring in persistence.xml
+        Map<String, Object> props = new HashMap<>();
+        props.put("jakarta.persistence.jdbc.driver", "org.postgresql.Driver");
+        props.put("jakarta.persistence.jdbc.url", DB_URL);
+        props.put("jakarta.persistence.jdbc.user", USER);
+        props.put("jakarta.persistence.jdbc.password", PASS);
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("basic-jdbc-persistence-unit", props);
 
-            // If configuring in persistence.xml, you can just pass in the persistence unit name
-            // EntityManagerFactory emf = Persistence.createEntityManagerFactory("basic-jdbc-persistence-unit");
+        // If configuring in persistence.xml, you can just pass in the persistence unit name
+        // EntityManagerFactory emf = Persistence.createEntityManagerFactory("basic-jdbc-persistence-unit");
 
-            EntityManager entityManager = emf.createEntityManager();
-            saveDataFromUser(entityManager);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        EntityManager entityManager = emf.createEntityManager();
+        saveDataFromUser(entityManager);
     }
 
     // Normally db would be created via migration - this is just for demo purposes
-    private static void initDb(Connection conn) throws SQLException {
+    private static void initDb(String dbUrl, String user, String pass) throws SQLException {
+        // Using this datasource just for initDb (normally db would be created via migration)
+        PGSimpleDataSource dataSource = new PGSimpleDataSource();
+        dataSource.setUrl(dbUrl);
+        Connection conn = dataSource.getConnection(user, pass);
+
         Statement stmt = conn.createStatement();
         String sql = "" +
                 "CREATE SCHEMA IF NOT EXISTS music;" +
