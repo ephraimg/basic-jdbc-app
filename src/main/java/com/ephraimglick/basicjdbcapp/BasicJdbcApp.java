@@ -15,10 +15,10 @@ public class BasicJdbcApp {
         saveDataFromUser(conn);
     }
 
-    private static Connection initDb(String DB_URL, String USER, String PASS) throws SQLException {
+    private static Connection initDb(String dbUrl, String user, String pass) throws SQLException {
         // Driver is registered via automatic service discovery (possible in JDBC 4+).
         // This relies on the driver being on the classpath.
-        Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        Connection conn = DriverManager.getConnection(dbUrl, user, pass);
         Statement stmt = conn.createStatement();
         String sql = "" +
                 "CREATE SCHEMA IF NOT EXISTS music;" +
